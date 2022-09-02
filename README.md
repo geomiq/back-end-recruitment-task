@@ -102,6 +102,8 @@ We would like to see how you approach a simple API, and how you might test this 
 
 When a Book is created, the uuid should be automatically created.
 
+A new PR created, showing the changes that you would like to merge into the main branch.
+
 This task is designed to see how you approach common things in a Laravel project, and is not designed to challenge you technically.
 
 ## Submissions
