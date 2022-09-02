@@ -1,6 +1,6 @@
 # Geomiq Back-end Recruitment Task
 
-Welcome to the beck-end recruitment task for Geomiq, congratulations for making it this far!
+Welcome to the beck-end recruitment task for Geomiq, congratulations on making it this far!
 
 ## Requirements
 
