@@ -1,64 +1,116 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Geomiq Back-end Recruitment Task
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Welcome to the beck-end recruitment task for Geomiq, congratulations for making it this far!
 
-## About Laravel
+## Requirements
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+To complete this task, you will need the following:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP 8.0 or 8.1 available
+- Docker or another way to run PHP applications
+- Code Editor
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Setup
 
-## Learning Laravel
+To set up this repo, you will first need to replicate this template into your own account. Please make sure that you keep this private to deter any cheating from future applicants.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Once you have pulled your repo locally:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Setup env
 
-## Laravel Sponsors
+```bash
+cp .env.example .env
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Using docker
 
-### Premium Partners
+```bash
+./vendor/bin/sail up -d
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Using other methods
 
-## Contributing
+```bash
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Or using Laravel valet just make sure it is in the right directory.
 
-## Code of Conduct
+## The Task
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+We are designing a system that allows Book Collectors to keep track of the Books 
+that they own, this part of the system will be the API.
 
-## Security Vulnerabilities
+We will require people to be able to register or login, and create a collector account. A user can
+have many collector accounts, as they might want to manage different books through different collector accounts.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Each Collector need to be able to Create, Read, Update, Delete their Books they own.
 
-## License
+### Data Models
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The data model for the Collector is as follows:
+
+```yaml
+Collector:
+  attributes:
+    id: int
+    uuid: string
+    name: string
+    description: text (nullable)
+    active: boolean
+    books: int (a count of the collectors books) (default 0)
+  relationships:
+    owner: BelongsTo(User)
+```
+
+The data model for the Book is as follows:
+
+```yaml
+Book:
+  attributes:
+    id: int
+    uuid: string
+    title: string
+    type: string (Fiction, Non-Fiction, Technical, Self-Help)
+    isbn: string
+    author: string
+    published_at: date
+  relationships:
+    collector: BelongsTo(Collector)
+```
+
+### ISBNs
+
+You will need to create a class/facade that allows the creation, lookup and validation of ISBNs - this does not have to connect
+to a real 3rd party API faking this logic will be fine.
+
+### Endpoints
+
+As part of this task, we expect the following endpoints to be available:
+
+- `GET /books` - we would expect to be able to filter/sort these books.
+- `POST /books`
+- `GET /books/recents` - we would expect to be able to filter/sort these books.
+- `GET /books/{book:uuid/isbn}`
+- `PUT|PATCH /books/{book:uuid/isbn}`
+- `DELETE /books/{book:uuid/isbn}`
+
+
+## What we would like to see
+
+We would like to see how you approach a simple API, and how you might test this to have confidence in the endpoints.
+
+When a Book is created, the uuid should be automatically created.
+
+This task is designed to see how you approach common things in a Laravel project, and is not designed to challenge you technically.
+
+## Submissions
+
+To submit your challenge, we would like to see a PR created on your repo so that we can understand how you would write your PRs. 
+Once you are ready for this to be reviewed please add the following user(s) as collaborators:
+
+- JustSteveKing
+
+Any questions should be directed to `steve.mcdougall@geomiq.com`, questions are encouraged during this process.
+
+Good luck, and may the odds ever be in your favour!
